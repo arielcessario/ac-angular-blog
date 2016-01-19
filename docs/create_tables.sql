@@ -40,3 +40,18 @@ CREATE TABLE posts_temas (
   tema_id int(11) DEFAULT 0,
   PRIMARY KEY (post_tema_id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+# COMENTARIOS DE POSTS -
+CREATE TABLE posts_comentarios (
+  post_comentario_id int(11) NOT NULL AUTO_INCREMENT,
+  post_id int(11) NOT NULL,
+  titulo varchar(150) NOT NULL,
+  detalles varchar(2000) NOT NULL,
+  parent_id int(11) NOT NULL,
+  creador_id int(11) NOT NULL,
+  votos_up int(11) NOT NULL,
+  votos_down int(11) NOT NULL,
+  fecha timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (post_comentario_id)
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8;

@@ -544,3 +544,133 @@ function checkPostsTemas($items)
 
     return $items;
 }
+
+
+/**
+ * @description Crea la relación entre un post y una categoría
+ * @param $comentario
+ * @param $post_id
+ * @param $db
+ * @return bool
+ */
+function createComentarios($comentario, $post_id, $db)
+{
+    $data = array(
+        'post_id' => $post_id,
+        'titulo' => $comentario->titulo,
+        'detalles' => $comentario->detalles,
+        'parent_id' => $comentario->parent_id,
+        'creador_id' => $comentario->creador_id,
+        'votos_up' => $comentario->votos_up,
+        'votos_down' => $comentario->votos_down,
+        'fecha' => $comentario->fecha
+    );
+
+    $cat = $db->insert('posts_comentarios', $data);
+    return ($cat > -1) ? true : false;
+}
+
+/**
+ * @description Modifica una comentario
+ * @param $comentario
+ */
+function updateComentario($comentario)
+{
+    $db = new MysqliDb();
+    $db->startTransaction();
+    $comentario_decoded = checkComentario(json_decode($comentario));
+    $db->where('comentario_id', $comentario_decoded->comentario_id);
+    $data = array(
+        'post_id' => $comentario_decoded->post_id,
+        'titulo' => $comentario_decoded->titulo,
+        'detalles' => $comentario_decoded->detalles,
+        'parent_id' => $comentario_decoded->parent_id,
+        'creador_id' => $comentario_decoded->creador_id,
+        'votos_up' => $comentario_decoded->votos_up,
+        'votos_down' => $comentario_decoded->votos_down,
+        'fecha' => $comentario_decoded->fecha
+    );
+
+    $result = $db->update('posts_comentarios', $data);
+    if ($result) {
+        $db->commit();
+        echo json_encode($result);
+    } else {
+        $db->rollback();
+        echo json_encode(-1);
+    }
+}
+
+/**
+ * @description Elimina una comentario
+ * @param $comentario_id
+ */
+function removeComentario($comentario_id)
+{
+    validateRol(0);
+    $db = new MysqliDb();
+
+    $db->where("comentario_id", $comentario_id);
+    $results = $db->delete('posts_comentarios');
+
+    if ($results) {
+
+        echo json_encode(1);
+    } else {
+        echo json_encode(-1);
+
+    }
+}
+
+
+/**
+ * @descr Obtiene las comentarios
+ */
+function getComentarios($post_id)
+{
+    $db = new MysqliDb();
+    $results = $db->rawQuery('SELECT
+    c.post_comentario_id,
+    c.post_id,
+    c.titulo,
+    c.detalles,
+    c.parent_id,
+    c.creador_id,
+    c.votos_up,
+    c.votos_down,
+    c.fecha,
+    u.nombre,
+    u.apellido
+FROM
+    posts_comentarios c
+        LEFT JOIN
+    usuarios u ON u.usuario_id = c.creador_id
+WHERE
+    c.post_id = ' . $post_id . '
+    order by c.post_comentario_id;');
+
+
+    echo json_encode($results);
+}
+
+
+/**
+ * @description Verifica todos los campos de comentario del post para que existan
+ * @param $comentarios
+ * @return mixed
+ */
+function checkComentarios($comentarios)
+{
+    foreach ($comentarios as $comentario) {
+        $comentario->post_id = (!array_key_exists("post_id", $comentario)) ? 0 : $comentario->post_id;
+        $comentario->titulo = (!array_key_exists("titulo", $comentario)) ? 0 : $comentario->titulo;
+        $comentario->detalles = (!array_key_exists("detalles", $comentario)) ? 0 : $comentario->detalles;
+        $comentario->parent_id = (!array_key_exists("parent_id", $comentario)) ? 0 : $comentario->parent_id;
+        $comentario->creador_id = (!array_key_exists("creador_id", $comentario)) ? 0 : $comentario->creador_id;
+        $comentario->votos_up = (!array_key_exists("votos_up", $comentario)) ? 0 : $comentario->votos_up;
+        $comentario->votos_down = (!array_key_exists("votos_down", $comentario)) ? 0 : $comentario->votos_down;
+        $comentario->fecha = (!array_key_exists("fecha", $comentario)) ? 0 : $comentario->fecha;
+    }
+
+    return $comentarios;
+}
