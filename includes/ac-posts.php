@@ -35,8 +35,7 @@ if ($jwt_enabled) {
     // Las funciones en el if no necesitan usuario logged
     if (($decoded == null) && (($_GET["function"] != null) &&
             ($_GET["function"] == 'getPosts' ||
-                $_GET["function"] == 'getTemas' ||
-                $_GET["function"] == 'getPostsTemas'))
+                $_GET["function"] == 'getTemas'))
     ) {
         $token = '';
     } else {
@@ -51,29 +50,21 @@ if ($decoded != null) {
         createPost($decoded->post);
     } else if ($decoded->function == 'createTema') {
         createTema($decoded->tema);
-    } else if ($decoded->function == 'createPostTema') {
-        createPostTema($decoded->post_tema);
     } else if ($decoded->function == 'updatePost') {
         updatePost($decoded->post);
     } else if ($decoded->function == 'updateTema') {
         updateTema($decoded->tema);
-    } else if ($decoded->function == 'updateTemaPost') {
-        updateTemaPost($decoded->post_tema);
     } else if ($decoded->function == 'removePost') {
         removePost($decoded->post_id);
     } else if ($decoded->function == 'removeTema') {
         removeTema($decoded->tema_id);
-    } else if ($decoded->function == 'removePostTema') {
-        removePostTema($decoded->post_tema_id);
     }
 } else {
     $function = $_GET["function"];
     if ($function == 'getPosts') {
-        getPosts($_GET["activos"]);
+        getPosts();
     } elseif ($function == 'getTemas') {
-        getTemas();
-    } elseif ($function == 'getPostsTemas') {
-        getPostsTemas($_GET["post_id"]);
+        getTemas($_GET["todos"]);
     }
 }
 
