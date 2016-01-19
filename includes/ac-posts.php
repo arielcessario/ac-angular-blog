@@ -363,8 +363,8 @@ FROM
     $final = array();
     foreach ($results as $row) {
 
-        if (!isset($final[$row["proyecto_id"]])) {
-            $final[$row["proyecto_id"]] = array(
+        if (!isset($final[$row["post_id"]])) {
+            $final[$row["post_id"]] = array(
                 'post_id' => $row["post_id"],
                 'usuario_id' => $row["usuario_id"],
                 'titulo' => $row["titulo"],
