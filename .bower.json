@@ -1,0 +1,13 @@
+{
+  "name": "ac-angular-proyectos",
+  "homepage": "https://github.com/arielcessario/ac-angular-proyectos",
+  "_release": "f2725410dd",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "f2725410dd2c2c2387fbb172bbef1e3dee5549af"
+  },
+  "_source": "git://github.com/arielcessario/ac-angular-proyectos.git",
+  "_target": "*",
+  "_originalSource": "ac-angular-proyectos"
+}
