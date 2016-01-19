@@ -206,7 +206,7 @@ function updatePost($post)
         'usuario_id' => $item_decoded->usuario_id,
         'titulo' => $item_decoded->titulo,
         'detalle' => $item_decoded->detalle,
-        'fecha' => substr($item_decoded->fecha_fin, 0, 10),
+        'fecha' => substr($item_decoded->fecha, 0, 10),
         'status' => $item_decoded->status,
         'en_slider' => $item_decoded->en_slider,
         'vistas' => $item_decoded->vistas,
