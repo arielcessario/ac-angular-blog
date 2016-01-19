@@ -346,7 +346,7 @@ function getPosts()
     p.down_votes,
     t.tema_id,
     t.nombre,
-    f.post_foto_id
+    f.post_foto_id,
     f.main,
     f.nombre nombreFoto,
     f.carpeta
